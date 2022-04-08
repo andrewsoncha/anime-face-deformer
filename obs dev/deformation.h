@@ -4,6 +4,8 @@
 #include<opencv2/imgproc.hpp>
 #include<opencv2/highgui.hpp>
 #include<math.h>
+#ifndef __DEFORMATION_H
+#define __DEFORMATION_H
 
 using namespace cv;
 using namespace std;
@@ -239,3 +241,5 @@ meshVertexes deformedMesh(meshVertexes originalMesh, double a) {
 	}
 	return newVertex;
 }
+
+#endif

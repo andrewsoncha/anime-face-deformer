@@ -153,7 +153,6 @@
   <ItemGroup>
     <ClInclude Include="bezier.h" />
     <ClInclude Include="deformation.h" />
-    <ClInclude Include="obsDev.h" />
     <ClInclude Include="optimization\optimization.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

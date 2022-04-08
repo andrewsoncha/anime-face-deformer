@@ -1,7 +1,11 @@
 #pragma once
 #include<vector>
+#ifndef __OPTIMIZATION_H
 #include"optimization.h"
+#endif
 using namespace std;
+
+
 
 vector<short> hillClimber::intToDirection(int num) {
 	vector<short> direction;

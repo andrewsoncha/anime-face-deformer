@@ -1,7 +1,30 @@
 #pragma once
 #include<vector>
+#ifndef __OPTIMIZATION_H
 #include"optimization.h"
+#endif
 using namespace std;
+
+double norm(vector<double> vec) {
+	int i;
+	double sum = 0;
+	for (i = 0; i < vec.size(); i++) {
+		sum += vec[i] * vec[i];
+	}
+	return sqrt(sum);
+}
+
+vector<double> makeNormScalar(vector<double> vec, double scalar) {//normalizes the given vector and multiplies the scalar inputted, making the norm of the vector the inputted scalar
+	double vecNorm;
+	int i;
+	vector<double> resultVec;
+	vecNorm = norm(vec);
+	for (i = 0; i < vec.size(); i++) {
+		resultVec.push_back(vec[i] / vecNorm * scalar);
+	}
+	return resultVec;
+}
+
 
 vector<double> gradientDescent::run(vector<double> parameter) {
 	vector<double> parameters;
