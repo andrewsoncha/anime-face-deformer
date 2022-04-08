@@ -25,7 +25,9 @@ vector<double> makeNormScalar(vector<double> vec, double scalar) {//normalizes t
 	return resultVec;
 }
 
-class evaluator {
+class evaluator {//Note to self: there might be problems if the element of direction vector is smaller than once since less than one pixel would be used as 0 pixels.
+	//Must make sure that all direction vector is either bigger than one or zero
+	//test with step size? digitization?
 
 };
 
@@ -49,8 +51,9 @@ public:
 };
 
 class hillClimber : public optimizer {//actually hook-jeeves algorithm. step size is constant(=alpha).
-	vector<short> intToDir(int num);
-	bool shouldGoThisDirection(vector<short> direction);
+	vector<short> intToDirection(int num);
+	vector<double> findBestDir(vector<double> current);
+	bool shouldGoThisDirection(vector<double> direction, vector<double> current);
 };
 
 class gradientDescent : public optimizer {//step size is proportionate to alpha value and gradient
