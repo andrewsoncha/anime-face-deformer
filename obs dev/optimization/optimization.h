@@ -28,7 +28,8 @@ vector<double> makeNormScalar(vector<double> vec, double scalar) {//normalizes t
 class evaluator {//Note to self: there might be problems if the element of direction vector is smaller than once since less than one pixel would be used as 0 pixels.
 	//Must make sure that all direction vector is either bigger than one or zero
 	//test with step size? digitization?
-
+public:
+	virtual double eval(vector<double> parameter);
 };
 
 class optimizer {
@@ -39,50 +40,26 @@ protected:
 	double thresh;
 	double stepSize;
 	int maxStep;
+	evaluator evaluatorInst;
 public:
-	optimizer(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput) {
+	optimizer(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator evaluatorInstInput) {
 		dimensionN = numX;
 		alpha = alphaInput;
 		thresh = threshInput;
 		stepSize = stepSizeInput;
 		maxStep = maxStepInput;
+		evaluatorInst = evaluatorInstInput;
 	}
-	virtual vector<double> run(vector<double> parameters);
+	virtual vector<double> run(vector<double> parameters) {};
 };
 
 class hillClimber : public optimizer {//actually hook-jeeves algorithm. step size is constant(=alpha).
 	vector<short> intToDirection(int num);
 	vector<double> findBestDir(vector<double> current);
 	bool shouldGoThisDirection(vector<double> direction, vector<double> current);
+	vector<double> run(vector<double> parameter);
 };
 
 class gradientDescent : public optimizer {//step size is proportionate to alpha value and gradient
-
+	vector<double> run(vector<double> parameter);
 };
-
-vector<int> hillClimb(int numX, vector<int> values, evaluator evaluatorInst) {
-	vector<int> parameters;
-	vector<double> gradient;
-	int i, j;
-	int step = 0;
-	for (i = 0; i < numX; i++) {
-		parameters.push_back(values[i]);
-	}
-	for (step = 0; step < maxStep; step++) {
-		double currentVal = evaluatorInst.eval(parameters);
-		double gradNorm;
-		for (i = 0; i < numX; i++) {
-			parameters[i] += alpha;
-			gradient.push_back(evaluatorInst.eval(parameters));
-			parameters[i] -= alpha;
-		}
-		gradNorm = norm(gradient);
-		for (i = 0; i < numX; i++) {
-			parameters[i] += (int)(partialDerivatives[i] * stepSize / numX);
-		}
-		if (evaluatorInst.eval(parameters) < thresh) {
-			break;
-		}
-	}
-	return parameters;
-}
