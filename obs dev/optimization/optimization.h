@@ -20,7 +20,7 @@ vector<double> makeNormScalar(vector<double> vec, double scalar) {//normalizes t
 	vector<double> resultVec;
 	vecNorm = norm(vec);
 	for (i = 0; i < vec.size(); i++) {
-		resultVec.push_back(vec[i] / norm * scalar);
+		resultVec.push_back(vec[i] / vecNorm * scalar);
 	}
 	return resultVec;
 }

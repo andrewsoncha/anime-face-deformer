@@ -61,17 +61,26 @@ bool hillClimber::shouldGoThisDirection(vector<double> direction, vector<double>
 
 vector<double> hillClimber::run(vector<double> parameter) {//basically hook-jeeves. Pick a direction(among 2^n) that has the steepest ascent, keep going until starts to go down, look for new direction, repeat the process
 	vector<double> current;
-	vector<double> gradient;
+	vector<double> direction;
 	int i, j;
 	int step = 0;
 	for (i = 0; i < numX; i++) {
 		current.push_back(parameters[i]);
 	}
+	direction = findBestDir(current);
 	for (step = 0; step < maxStep; step++) {
-		double currentVal = evaluatorInst.eval(current);
-		double gradNorm;
-		//todo: find new best direction
-		
+		if (evaluatorInst.eval(current) < thresh) {
+			break;
+		}
+		if (shouldGoThisDirection(direction, current)) {
+			int i, j;
+			for (i = 0; i < numX; i++) {
+				direction[i] += direction[i];
+			}
+		}
+		else {
+			direction = findBestDir(current);
+		}
 	}
-	return parameters;
+	return current;
 }
