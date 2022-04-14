@@ -13,7 +13,7 @@ class evaluator {//Note to self: there might be problems if the element of direc
 	//Must make sure that all direction vector is either bigger than one or zero
 	//test with step size? digitization?
 public:
-	virtual double eval(vector<double> parameter);
+	virtual double eval(vector<double> parameter) = 0;
 };
 
 class optimizer {
@@ -23,9 +23,9 @@ protected:
 	double thresh;
 	double stepSize;
 	int maxStep;
-	evaluator evaluatorInst;
+	evaluator* evaluatorInst;
 public:
-	optimizer(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator evaluatorInstInput) {
+	optimizer(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) {
 		dimensionN = numX;
 		alpha = alphaInput;
 		thresh = threshInput;
@@ -33,18 +33,22 @@ public:
 		maxStep = maxStepInput;
 		evaluatorInst = evaluatorInstInput;
 	}
-	virtual vector<double> run(vector<double> parameters) {};
+	virtual vector<double> run(vector<double> parameters) = 0;
 };
 
 class hillClimber : public optimizer {//actually hook-jeeves algorithm. step size is constant(=alpha).
 	vector<short> intToDirection(int num);
 	vector<double> findBestDir(vector<double> current);
 	bool shouldGoThisDirection(vector<double> direction, vector<double> current);
-	vector<double> run(vector<double> parameter);
+public:
+	hillClimber(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput);
+	vector<double> run(vector<double> parameter) override;
 };
 
 class gradientDescent : public optimizer {//step size is proportionate to alpha value and gradient
-	vector<double> run(vector<double> parameter);
+public:
+	gradientDescent(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput);
+	vector<double> run(vector<double> parameter) override;
 };
 
 #endif

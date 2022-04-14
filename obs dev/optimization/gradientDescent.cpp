@@ -25,6 +25,9 @@ vector<double> makeNormScalar(vector<double> vec, double scalar) {//normalizes t
 	return resultVec;
 }
 
+gradientDescent::gradientDescent(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) :optimizer::optimizer(numX, alphaInput, threshInput, stepSizeInput, maxStepInput, evaluatorInstInput)
+{
+}
 
 vector<double> gradientDescent::run(vector<double> parameter) {
 	vector<double> parameters;
@@ -35,18 +38,18 @@ vector<double> gradientDescent::run(vector<double> parameter) {
 		parameters.push_back(parameter[i]);
 	}
 	for (step = 0; step < maxStep; step++) {
-		double currentVal = evaluatorInst.eval(parameters);
+		double currentVal = evaluatorInst->eval(parameters);
 		double gradNorm;
 		for (i = 0; i < dimensionN; i++) {
 			parameters[i] += alpha;
-			gradient.push_back(evaluatorInst.eval(parameters));
+			gradient.push_back(evaluatorInst->eval(parameters));
 			parameters[i] -= alpha;
 		}
 		gradNorm = norm(gradient);
 		for (i = 0; i < dimensionN; i++) {
 			parameters[i] += (gradient[i] * stepSize / gradNorm);
 		}
-		if (evaluatorInst.eval(parameters) < thresh) {
+		if (evaluatorInst->eval(parameters) < thresh) {
 			break;
 		}
 	}

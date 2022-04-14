@@ -10,8 +10,9 @@
 using namespace std;
 using namespace cv;
 
+
 int main() {
-	Mat frame;
+	/*Mat frame;
 	Mesh loadedMesh;
 	meshVertexes loadedVertexes;
 	frame = imread("eyebrowGreen.png", IMREAD_COLOR);
@@ -52,7 +53,7 @@ int main() {
 		imshow("manipulationResult", manipulationResult);
 		imshow("result", result);
 		waitKey(1);
-	}*/
+	}/
 	for (double alpha = 0; alpha < 1; alpha += 0.02) {//todo: try blinking. from alpha>0.5, mesh is inverted by the y-axis
 		meshVertexes newVert = deformedMesh(loadedVertexes, alpha);
 		result = drawMeshNVertex(frame, loadedMesh, newVert);
@@ -74,5 +75,14 @@ int main() {
 	normalize(distanceMat, distanceMat, 0,1,NORM_MINMAX);
 	imshow("distanceMat", distanceMat);
 	waitKey(10000000);
+	return 0;*/
+	Bezier curve = Bezier(Point(0, 0), Point(200, 400), Point(500, 500), Point(600, 600));
+	Mat baseBezierImg = curve.drawBezier(Mat::zeros(Size(700, 800), CV_8UC1), 2, Scalar(255));
+	imshow("baseImg", baseBezierImg);
+	waitKey(10);
+	bezierEvaluator bezierEvalInst = bezierEvaluator(baseBezierImg);
+	hillClimber hillClimberInst = hillClimber(8, 100, 0.01, 100, 10000, &bezierEvalInst);
+	vector<double> initParam = vector<double>({ 0,0,250,350,450,250,600,600 });
+	hillClimberInst.run(initParam);
 	return 0;
 }
