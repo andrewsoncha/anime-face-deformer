@@ -51,4 +51,9 @@ public:
 	vector<double> run(vector<double> parameter) override;
 };
 
+class evolutionAlgorithm : public optimizer {
+public:
+	evolutionAlgorithm()
+};
+
 #endif

@@ -76,13 +76,13 @@ int main() {
 	imshow("distanceMat", distanceMat);
 	waitKey(10000000);
 	return 0;*/
-	Bezier curve = Bezier(Point(0, 0), Point(200, 400), Point(500, 500), Point(600, 600));
-	Mat baseBezierImg = curve.drawBezier(Mat::zeros(Size(700, 800), CV_8UC1), 2, Scalar(255));
+	Bezier curve = Bezier(Point(0, 700), Point(0, 0), Point(0, 0), Point(600, 0));
+	Mat baseBezierImg = curve.drawBezier(Mat::zeros(Size(700, 800), CV_8UC3), 2, Scalar(255,255,255));
 	imshow("baseImg", baseBezierImg);
-	waitKey(10);
-	bezierEvaluator bezierEvalInst = bezierEvaluator(baseBezierImg);
+	waitKey(100000);
+	/*bezierEvaluator bezierEvalInst = bezierEvaluator(baseBezierImg);
 	hillClimber hillClimberInst = hillClimber(8, 100, 0.01, 100, 10000, &bezierEvalInst);
 	vector<double> initParam = vector<double>({ 0,0,250,350,450,250,600,600 });
-	hillClimberInst.run(initParam);
+	hillClimberInst.run(initParam);*/
 	return 0;
 }

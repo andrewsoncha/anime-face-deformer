@@ -2,7 +2,7 @@
 #include<opencv2/core.hpp>
 #include<opencv2/imgproc.hpp>
 #include"optimization/optimization.h"
-#define BEZIER_MIN_T 0.0001
+#define BEZIER_MIN_T 0.001
 #ifndef __BEZIER_H
 #define __BEZIER_H
 
@@ -37,11 +37,20 @@ public:
 	Mat drawBezier(Mat canvas, int radius, Scalar color) {
 		double i;
 		Mat result;
-		double maxKappa=0.0;
+		double maxKappa=0.0, minKappa = 1.0;
 		Point maxKappaPnt;
 		canvas.copyTo(result);
 		printf("controlPnt 0 and 3: (%d %d) (%d %d)\n", controlPnts[0].x, controlPnts[0].y, controlPnts[3].x, controlPnts[3].y);
 		printf("drawBezier start, end (%d %d) (%d %d)\n", getPnt(0.0).x, getPnt(0.0).y, getPnt(1.0).x, getPnt(1.0).y);
+		for (i = 0; i < 1.0; i += BEZIER_MIN_T) {
+			double kappa = getKappa(i);
+			if (maxKappa < kappa) {
+				maxKappa = kappa;
+			}
+			if (minKappa > kappa) {
+				minKappa = kappa;
+			}
+		}
 		for (i = 0; i < 1.0; i += BEZIER_MIN_T) {
 			double kappa = getKappa(i);
 			circle(result, getPnt(i), radius, color, -1);
@@ -49,11 +58,11 @@ public:
 				maxKappa = kappa;
 				maxKappaPnt = getPnt(i);
 			}
-			circle(result, getPnt(i), radius, color, -1);
+			circle(result, getPnt(i), radius, Scalar(255*(kappa-minKappa)/maxKappa, 255 * (kappa - minKappa) / maxKappa, 255 * (kappa - minKappa) / maxKappa), -1);
 			printf("t:%lf    kappa:%lf\n", i, kappa);
 		}
-		circle(result, maxKappaPnt, 5, Scalar(0, 0, 255), -1);
-		printf("maxKappaPnt:%lf\n", maxKappa);
+		circle(result, maxKappaPnt, 7, Scalar(0, 0, 255), -1);
+		printf("maxKappaPnt:%lf %d %d\n", maxKappa, maxKappaPnt.x, maxKappaPnt.y);
 		return result;
 	}
 	Point getPnt(double t) {
@@ -137,7 +146,7 @@ public:
 		//printf("diffDiff = %lf %lf\n", currentDiffs[0] - nextDiffs[0], currentDiffs[1] - nextDiffs[1]);
 		TPrime[0] = (nextDiffs[0] - currentDiffs[0]) / BEZIER_MIN_T;
 		TPrime[1] = (nextDiffs[1] - currentDiffs[1]) / BEZIER_MIN_T;
-		return sqrt(TPrime[0] * TPrime[0] + TPrime[1] + TPrime[1]) / sqrt(currentDiffs[0] * currentDiffs[0] + currentDiffs[1] * currentDiffs[1]);//K=|T'|/|r'|
+		return sqrt(TPrime[0] * TPrime[0] + TPrime[1] * TPrime[1]) / sqrt(currentDiffs[0] * currentDiffs[0] + currentDiffs[1] * currentDiffs[1]);//K=|T'|/|r'|
 	}
 	double evaluate(Mat img) {
 		Mat originalImg, evalImg;
