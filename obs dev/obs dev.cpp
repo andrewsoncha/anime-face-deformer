@@ -10,6 +10,19 @@
 using namespace std;
 using namespace cv;
 
+vector<Point> makeMesh(Bezier curve) {
+	double nextVertDist = BEZIER_MIN_T;
+	double t;
+	Mat curveImg = Mat::zeros(Size(800,700),CV_8UC3);
+	curveImg = curve.drawBezier(curveImg, 3, Scalar(255, 255, 255));
+	for (t = 0; t < 1.0; t += nextVertDist) {
+		nextVertDist = 0.1 / curve.getKappa(t);
+		circle(curveImg, curve.getPnt(t), 5, Scalar(255, 0, 0), -1);
+	}
+	imshow("curveImg", curveImg);
+	waitKey(1000000);
+	return vector<Point>();
+}
 
 int main() {
 	/*Mat frame;
@@ -76,8 +89,9 @@ int main() {
 	imshow("distanceMat", distanceMat);
 	waitKey(10000000);
 	return 0;*/
-	Bezier curve = Bezier(Point(0, 700), Point(0, 0), Point(0, 0), Point(600, 0));
+	Bezier curve = Bezier(Point(0, 700), Point(200, 340), Point(500, 600), Point(600, 300));
 	Mat baseBezierImg = curve.drawBezier(Mat::zeros(Size(700, 800), CV_8UC3), 2, Scalar(255,255,255));
+	makeMesh(curve);
 	imshow("baseImg", baseBezierImg);
 	waitKey(100000);
 	/*bezierEvaluator bezierEvalInst = bezierEvaluator(baseBezierImg);

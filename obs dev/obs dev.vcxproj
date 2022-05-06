@@ -149,6 +149,7 @@
     <ClCompile Include="obs dev.cpp" />
     <ClCompile Include="optimization\gradientDescent.cpp" />
     <ClCompile Include="optimization\hillClimber.cpp" />
+    <ClCompile Include="optimization\particleSwarm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bezier.h" />

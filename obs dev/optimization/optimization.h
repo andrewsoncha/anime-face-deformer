@@ -5,6 +5,7 @@
 #include<math.h>
 #ifndef __OPTIMIZATION_H
 #define __OPTIMIZATION_H
+#define MAX 99999999
 
 using namespace std;
 
@@ -51,9 +52,12 @@ public:
 	vector<double> run(vector<double> parameter) override;
 };
 
-class evolutionAlgorithm : public optimizer {
+class particleSwarm : public optimizer {
 public:
-	evolutionAlgorithm()
+	double cognitiveCoefficient, socialCoefficient;
+	swarm swarmInst;
+	particleSwarm(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxSizeInput, double cognitiveCoefficientInput, double socialCoefficientInput, evaluator* evaluatorInstInput);
+	vector<double> run(vector<double> parameter) override;
 };
 
 #endif
