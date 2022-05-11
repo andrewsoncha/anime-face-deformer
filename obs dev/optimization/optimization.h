@@ -19,16 +19,14 @@ public:
 
 class optimizer {
 protected:
-	double alpha;
 	int dimensionN;
 	double thresh;
 	double stepSize;
 	int maxStep;
 	evaluator* evaluatorInst;
 public:
-	optimizer(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) {
+	optimizer(int numX, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) {
 		dimensionN = numX;
-		alpha = alphaInput;
 		thresh = threshInput;
 		stepSize = stepSizeInput;
 		maxStep = maxStepInput;
@@ -37,27 +35,18 @@ public:
 	virtual vector<double> run(vector<double> parameters) = 0;
 };
 
-class hillClimber : public optimizer {//actually hook-jeeves algorithm. step size is constant(=alpha).
-	vector<short> intToDirection(int num);
-	vector<double> findBestDir(vector<double> current);
-	bool shouldGoThisDirection(vector<double> direction, vector<double> current);
+class derivativeBasedOptimizer : public optimizer {
+	double alpha;
+	vector<double> getGradientApprox(vector<double> parameter);//get approximation of gradient by changing each parameter by stepsize and dividing the change in y value with stepsize
 public:
-	hillClimber(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput);
-	vector<double> run(vector<double> parameter) override;
+	derivativeBasedOptimizer(int numX, double threshInput, double alphaInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) :optimizer::optimizer(numX, threshInput, stepSizeInput, maxStepInput, evaluatorInstInput) {
+		alpha = alphaInput;
+	}
 };
 
-class gradientDescent : public optimizer {//step size is proportionate to alpha value and gradient
+class swarmBasedOptimizer : public optimizer {
 public:
-	gradientDescent(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput);
-	vector<double> run(vector<double> parameter) override;
-};
-
-class particleSwarm : public optimizer {
-public:
-	double cognitiveCoefficient, socialCoefficient;
-	swarm swarmInst;
-	particleSwarm(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxSizeInput, double cognitiveCoefficientInput, double socialCoefficientInput, evaluator* evaluatorInstInput);
-	vector<double> run(vector<double> parameter) override;
+	swarmBasedOptimizer(int numX, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) :optimizer::optimizer(numX, threshInput, stepSizeInput, maxStepInput, evaluatorInstInput) {}
 };
 
 #endif

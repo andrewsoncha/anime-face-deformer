@@ -25,7 +25,7 @@ vector<double> makeNormScalar(vector<double> vec, double scalar) {//normalizes t
 	return resultVec;
 }
 
-gradientDescent::gradientDescent(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) :optimizer::optimizer(numX, alphaInput, threshInput, stepSizeInput, maxStepInput, evaluatorInstInput)
+gradientDescent::gradientDescent(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) :derivativeBasedOptimizer::derivativeBasedOptimizer(numX, alphaInput, threshInput, stepSizeInput, maxStepInput, evaluatorInstInput)
 {
 }
 

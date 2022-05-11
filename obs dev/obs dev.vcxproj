@@ -154,7 +154,9 @@
   <ItemGroup>
     <ClInclude Include="bezier.h" />
     <ClInclude Include="deformation.h" />
+    <ClInclude Include="optimization\derivativeBasedOptimization.h" />
     <ClInclude Include="optimization\optimization.h" />
+    <ClInclude Include="optimization\swarmBasedOptimization.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

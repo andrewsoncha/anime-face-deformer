@@ -1,11 +1,11 @@
 #pragma once
 #include<vector>
 #ifndef __OPTIMIZATION_H
-#include"optimization.h"
+#include"derivativeBasedOptimization.h"
 #endif
 using namespace std;
 
-hillClimber::hillClimber(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) :optimizer::optimizer(numX, alphaInput, threshInput, stepSizeInput, maxStepInput, evaluatorInstInput)
+hillClimber::hillClimber(int numX, double alphaInput, double threshInput, double stepSizeInput, int maxStepInput, evaluator* evaluatorInstInput) :derivativeBasedOptimizer::derivativeBasedOptimizer(numX, alphaInput, threshInput, stepSizeInput, maxStepInput, evaluatorInstInput)
 {
 }
 
